@@ -14,7 +14,7 @@
 
 ### On MacOS
 ```sh
-brew install avr-dude osx-cross/avr/avr-gcc
+brew install avrdude osx-cross/avr/avr-gcc
 git clone --recursive https://github.com/ebith/Switch-Fightstick.git
 cd Switch-Fightstick
 make
@@ -23,3 +23,5 @@ avrdude -pm32u4 -cavr109 -D -P$(ls /dev/tty.usbmodem*) -b57600 -Uflash:w:Joystic
 pip3 install pyserial
 ./example/rapid-fire-a.py /dev/tty.usbserial*
 ```
+
+You can also download Joystick.hex [here](https://github.com/ebith/Switch-Fightstick/releases/latest).
