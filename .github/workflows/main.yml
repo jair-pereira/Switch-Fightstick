@@ -7,10 +7,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with: 
-        submodule: recursive
-    - run: |
-        sudo apt install gcc-avr binutils-avr binutils-avr
-        make        
+        submodules: recursive
+    - run: sudo apt-get install gcc-avr binutils-avr binutils-avr
+    - run: make        
     - uses: actions/create-release@v1
       id: create_release
       env:
