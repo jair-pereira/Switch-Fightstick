@@ -24,4 +24,4 @@ pip3 install pyserial
 ./example/rapid-fire-a.py /dev/tty.usbserial*
 ```
 
-You can also download Joystick.hex [here](https://github.com/ebith/Switch-Fightstick/releases/latest).
+You can also download Joystick.hex [here](https://github.com/ebith/Switch-Fightstick/releases/latest/download/Joystick.hex).
