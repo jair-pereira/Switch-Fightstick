@@ -10,8 +10,8 @@ joycon = JoyCon(port=args.port)
 
 try:
     while True:
-        sleep(0.1)
-        joycon.press_button('A')
+        joycon.hold_stick('LX', 0)
+        joycon.hold_stick('RX', 0)
+        
 except KeyboardInterrupt:
-    joycon.press_button('RELEASE')
     joycon.unpair()
