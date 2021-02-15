@@ -26,87 +26,35 @@ these buttons for our use.
 
 #include <LUFA/Drivers/Peripheral/Serial.h>
 #include "Joystick.h"
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
 
-uint8_t target = RELEASE;
-uint16_t command;
+uint16_t command_btn;
+uint8_t command_lx, command_ly, command_rx, command_ry, command_hat;
 
 void parseLine(char *line) {
 	char t[8];
-	char c[16];
-  sscanf(line, "%s %s", t, c);
-	if (strcasecmp(t, "Button") == 0) {
-		target = Button;
+	uint16_t c; //char c[16];
+	sscanf(line, "%s %" SCNu16, t, &c);
+	if (strcasecmp(t, "BTN") == 0) {
+		command_btn = c;
 	} else if (strcasecmp(t, "LX") == 0) {
-		target = LX;
+		command_lx = c;
 	} else if (strcasecmp(t, "LY") == 0) {
-		target = LY;
+		command_ly = c;
 	} else if (strcasecmp(t, "RX") == 0) {
-		target = RX;
+		command_rx = c;
 	} else if (strcasecmp(t, "RY") == 0) {
-		target = RY;
+		command_ry = c;
 	} else if (strcasecmp(t, "HAT") == 0) {
-		target = HAT;
+		command_hat = c;
 	} else {
-		target = RELEASE;
-	}
-	if (strcasecmp(c, "Y") == 0) {
-		command = SWITCH_Y;
-	} else if (strcasecmp(c, "B") == 0) {
-		command = SWITCH_B;
-	} else if (strcasecmp(c, "A") == 0) {
-		command = SWITCH_A;
-	} else if (strcasecmp(c, "X") == 0) {
-		command = SWITCH_X;
-	} else if (strcasecmp(c, "L") == 0) {
-		command = SWITCH_L;
-	} else if (strcasecmp(c, "R") == 0) {
-		command = SWITCH_R;
-	} else if (strcasecmp(c, "ZL") == 0) {
-		command = SWITCH_ZL;
-	} else if (strcasecmp(c, "ZR") == 0) {
-		command = SWITCH_ZR;
-	} else if (strcasecmp(c, "SELECT") == 0) {
-		command = SWITCH_SELECT;
-	} else if (strcasecmp(c, "START") == 0) {
-		command = SWITCH_START;
-	} else if (strcasecmp(c, "LCLICK") == 0) {
-		command = SWITCH_LCLICK;
-	} else if (strcasecmp(c, "RCLICK") == 0) {
-		command = SWITCH_RCLICK;
-	} else if (strcasecmp(c, "HOME") == 0) {
-		command = SWITCH_HOME;
-	} else if (strcasecmp(c, "CAPTURE") == 0) {
-		command = SWITCH_CAPTURE;
-	} else if (strcasecmp(c, "RELEASE") == 0) {
-		command = SWITCH_RELEASE;
-	} else if (strcasecmp(c, "MIN") == 0) {
-		command = STICK_MIN;
-	} else if (strcasecmp(c, "MAX") == 0) {
-		command = STICK_MAX;
-	} else if (strcasecmp(c, "TOP") == 0) {
-		command = HAT_TOP;
-	} else if (strcasecmp(c, "TOP_RIGHT") == 0) {
-		command = HAT_TOP_RIGHT;
-	} else if (strcasecmp(c, "RIGHT") == 0) {
-		command = HAT_RIGHT;
-	} else if (strcasecmp(c, "BOTTOM_RIGHT") == 0) {
-		command = HAT_BOTTOM_RIGHT;
-	} else if (strcasecmp(c, "BOTTOM") == 0) {
-		command = HAT_BOTTOM;
-	} else if (strcasecmp(c, "BOTTOM_LEFT") == 0) {
-		command = HAT_BOTTOM_LEFT;
-	} else if (strcasecmp(c, "LEFT") == 0) {
-		command = HAT_LEFT;
-	} else if (strcasecmp(c, "TOP_LEFT") == 0) {
-		command = HAT_TOP_LEFT;
-	} else if (strcasecmp(c, "CENTER") == 0) {
-		if (target == HAT) {
-			command = HAT_CENTER;
-		} else {
-			command = STICK_CENTER;
-		}
-	} else {
-		target = RELEASE;
+		command_btn |= SWITCH_RELEASE;
+		command_lx   = STICK_CENTER;
+		command_ly   = STICK_CENTER;
+		command_rx   = STICK_CENTER;
+		command_ry   = STICK_CENTER;
+		command_hat  = HAT_CENTER;
 	}
 }
 
@@ -271,41 +219,13 @@ void HID_Task(void) {
 void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 	/* Clear the report contents */
 	memset(ReportData, 0, sizeof(USB_JoystickReport_Input_t));
-	ReportData->LX = STICK_CENTER;
-	ReportData->LY = STICK_CENTER;
-	ReportData->RX = STICK_CENTER;
-	ReportData->RY = STICK_CENTER;
-	ReportData->HAT = HAT_CENTER;
-	ReportData->Button |= SWITCH_RELEASE;
-
-	switch(target) {
-		case Button:
-			ReportData->Button |= command;
-			break;
-		case LX:
-			ReportData->LX = command;
-			break;
-		case LY:
-			ReportData->LY = command;
-			break;
-		case RX:
-			ReportData->RX = command;
-			break;
-		case RY:
-			ReportData->RY = command;
-			break;
-		case HAT:
-			ReportData->HAT = command;
-			break;
-		case RELEASE:
-		default:
-			ReportData->LX = STICK_CENTER;
-			ReportData->LY = STICK_CENTER;
-			ReportData->RX = STICK_CENTER;
-			ReportData->RY = STICK_CENTER;
-			ReportData->HAT = HAT_CENTER;
-			ReportData->Button |= SWITCH_RELEASE;
-			break;
-	}
+	
+	ReportData->LX = command_lx;
+	ReportData->LY = command_ly;
+	ReportData->RX = command_rx;
+	ReportData->RY = command_ry;
+	ReportData->HAT = command_hat;
+	ReportData->Button = command_btn;
+	
 }
 // vim: noexpandtab
