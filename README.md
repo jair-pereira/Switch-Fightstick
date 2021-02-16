@@ -1,4 +1,4 @@
-# Switch-PCcontroller
+# SwitchPC_Controller
 
 ## About
 This repository allows you to use your computer to send multiple button presses simultaneously to your Switch.
@@ -8,7 +8,7 @@ I'm building on top of two works:
 1. [progmem/Switch-Fightstick](https://github.com/progmem/Switch-Fightstick): reverse-engineered the Pokken Pro Pad, allowing us to use microcontrollers to send commands to the Switch.
 2. [ebith/Switch-Fightstick](https://github.com/ebith/Switch-Fightstick): wrote an interface to send commands from the computer to the Switch using serial communication.
 
-I modified [ebith/Switch-Fightstick](https://github.com/ebith/Switch-Fightstick) to allow multiple button presses simultaneously. If you do not need simultaneous button presses in your macro, I recommend checking [ebith/Switch-Fightstick](https://github.com/ebith/Switch-Fightstick) instead.
+I modified [ebith/Switch-Fightstick](https://github.com/ebith/Switch-Fightstick) to allow multiple button presses simultaneously. If you do not need simultaneous button presses in your macro, I recommend checking their repository instead.
 
 There are other interesting repositories for macros such as [Zelda Snowball-thrower](https://github.com/bertrandom/snowball-thrower) and [Splatoon 2 post printer](https://github.com/shinyquagsire23/Switch-Fightstick).
 
@@ -28,7 +28,7 @@ There are other interesting repositories for macros such as [Zelda Snowball-thro
 2. Flash the Joystick.hex to the Teensy
 3. Run one of the scripts in the example folder
 
-You can also download Joystick.hex [here](https://github.com/ebith/Switch-Fightstick/releases/latest/download/Joystick.hex).
+You can also download Joystick.hex [here](https://github.com/jair-pereira/SwitchPC_Controller/releases/download/v0.2.0/Joystick.hex) (for Teensy).
 
 ## Writing a macro
 todo
